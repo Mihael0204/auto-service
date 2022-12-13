@@ -20,7 +20,6 @@ public class TaskMapper {
     public Task toModel(TaskRequestDto requestDto) {
         Task task = new Task();
         task.setMaster(masterService.findById(requestDto.getMasterId()));
-        task.setOrder(orderService.findById(requestDto.getOrderId()));
         task.setPrice(requestDto.getPrice());
         task.setStatus(requestDto.getStatus());
         return task;
@@ -31,7 +30,6 @@ public class TaskMapper {
         taskResponseDto.setId(task.getId());
         taskResponseDto.setPrice(task.getPrice());
         taskResponseDto.setMasterId(task.getMaster().getId());
-        taskResponseDto.setOrderId(task.getOrder().getId());
         taskResponseDto.setStatus(task.getStatus().toString());
         return taskResponseDto;
     }

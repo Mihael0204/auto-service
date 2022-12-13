@@ -11,7 +11,7 @@ public interface MasterService {
 
     Master update(Master master);
 
-    List<Order> findReadyOrder(Long orderId);
+    List<Order> getCompletedOrdersById(Long masterId);
 
     double getSalary(Long masterId);
 

@@ -26,7 +26,7 @@ public class Order {
     private Car car;
     private String description;
     private LocalDateTime startDate;
-    @OneToMany(mappedBy = "order")
+    @OneToMany
     private List<Task> tasks;
     @OneToMany
     private List<Product> products;

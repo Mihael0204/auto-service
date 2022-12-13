@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MasterServiceImpl implements MasterService {
+    private static final double MASTERS_SALARY_PERCENT = 0.4;
     private final MasterRepository repository;
 
     public MasterServiceImpl(MasterRepository repository) {
@@ -27,8 +28,8 @@ public class MasterServiceImpl implements MasterService {
     }
 
     @Override
-    public List<Order> findReadyOrder(Long orderId) {
-        return findById(orderId).getCompleteOrders();
+    public List<Order> getCompletedOrdersById(Long masterId) {
+        return findById(masterId).getCompleteOrders();
     }
 
     @Override
@@ -42,7 +43,7 @@ public class MasterServiceImpl implements MasterService {
                 orders.get(i).setStatus(Status.PAID);
             }
         }
-        return result * 0.4;
+        return result * MASTERS_SALARY_PERCENT;
     }
 
     @Override

@@ -33,7 +33,7 @@ public class OwnerController {
     }
 
     @PostMapping
-    public OwnerResponseDto createUser(@RequestBody OwnerRequestDto requestDto) {
+    public OwnerResponseDto create(@RequestBody OwnerRequestDto requestDto) {
         return ownerMapper.toDto(ownerService.save(ownerMapper.toModel(requestDto)));
     }
 
@@ -45,7 +45,7 @@ public class OwnerController {
         return ownerMapper.toDto(ownerService.save(owner));
     }
 
-    @GetMapping("/orders/{id}")
+    @GetMapping("/{id}/orders")
     public List<OrderResponseDto> getAllOrdersById(@PathVariable Long id) {
         return ownerService.findById(id).getOrders().stream()
                 .map(orderMapper::toDto)

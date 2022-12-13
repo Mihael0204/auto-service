@@ -51,11 +51,10 @@ public class OrderController {
         return orderMapper.toDto(orderService.save(order));
     }
 
-    @PutMapping("/status/{id}")
+    @PutMapping("/{id}/status")
     public OrderResponseDto updateStatus(@PathVariable Long id,
-                                         @RequestBody OrderRequestDto orderRequestDto,
                                          @RequestBody Status status) {
-        Order order = orderMapper.toModel(orderRequestDto);
+        Order order = orderService.findById(id);
         order.setId(id);
         order.setStatus(status);
         return orderMapper.toDto(orderService.save(order));

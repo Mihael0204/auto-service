@@ -41,9 +41,8 @@ public class TaskController {
 
     @GetMapping("/status/{id}")
     public TaskResponseDto updateStatus(@PathVariable Long id,
-                                        @RequestBody Status status,
-                                        @RequestBody TaskRequestDto requestDto) {
-        Task task = taskMapper.toModel(requestDto);
+                                        @RequestBody Status status) {
+        Task task = taskService.findById(id);
         task.setId(id);
         task.setStatus(status);
         return taskMapper.toDto(taskService

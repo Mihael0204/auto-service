@@ -33,7 +33,7 @@ public class MasterController {
     }
 
     @PostMapping
-    public MasterResponseDto createMaster(@RequestBody MasterRequestDto masterRequestDto) {
+    public MasterResponseDto create(@RequestBody MasterRequestDto masterRequestDto) {
         return masterMapper.toDto(masterService.save(masterMapper.toModel(masterRequestDto)));
     }
 
@@ -46,14 +46,14 @@ public class MasterController {
     }
 
     @GetMapping("/orders/{id}")
-    public List<OrderResponseDto> getCompleteOrdersById(@PathVariable Long id) {
-        return masterService.findReadyOrder(id)
+    public List<OrderResponseDto> getCompletedOrdersById(@PathVariable Long id) {
+        return masterService.getCompletedOrdersById(id)
                 .stream().map(orderMapper::toDto)
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/salary")
-    public double getSalary(@PathVariable Long masterId) {
-        return masterService.getSalary(masterId);
+    @GetMapping("/{id}/salary")
+    public double getSalary(@PathVariable Long id) {
+        return masterService.getSalary(id);
     }
 }

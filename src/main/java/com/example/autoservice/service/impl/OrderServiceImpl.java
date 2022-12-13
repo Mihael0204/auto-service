@@ -6,21 +6,26 @@ import com.example.autoservice.model.Status;
 import com.example.autoservice.model.Task;
 import com.example.autoservice.repository.OrderRepository;
 import com.example.autoservice.service.OrderService;
+import com.example.autoservice.service.OwnerService;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
 public class OrderServiceImpl implements OrderService {
-    private final OrderRepository repository;
+    private static final int DIAGNOSTICS_PRICE = 500;
+    private final OrderRepository orderRepository;
+    private final OwnerService ownerService;
 
-    public OrderServiceImpl(OrderRepository repository) {
-        this.repository = repository;
+    public OrderServiceImpl(OrderRepository orderRepository,
+                            OwnerService ownerService) {
+        this.orderRepository = orderRepository;
+        this.ownerService = ownerService;
     }
 
     @Override
     public Order save(Order order) {
-        return repository.save(order);
+        return orderRepository.save(order);
     }
 
     @Override
@@ -32,7 +37,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order update(Order order) {
-        return repository.save(order);
+        return orderRepository.save(order);
     }
 
     @Override
@@ -48,17 +53,21 @@ public class OrderServiceImpl implements OrderService {
         Order order = findById(orderId);
         List<Task> tasks = findById(orderId).getTasks();
         List<Product> products = findById(orderId).getProducts();
-        double countTasks = tasks.size() == 1 ? 500 : tasks.stream()
+        double countTasks = tasks.size() == 1 ? DIAGNOSTICS_PRICE : tasks.stream()
                 .mapToDouble(Task::getPrice).sum();
         double countProducts = products.stream().mapToDouble(Product::getPrice).sum();
-        order.setFullPrice((countTasks - (tasks.size() / 100))
-                + countProducts - (products.size() / 100));
+        order.setFullPrice((countTasks * (100 - (ownerService
+                        .findAllOrdersById(orderRepository
+                                .findById(orderId).get().getCar().getOwner().getId()).size() * 2)))
+                + (countProducts * (100 - ownerService
+                        .findAllOrdersById(orderRepository
+                                .findById(orderId).get().getCar().getOwner().getId()).size())));
         return order;
     }
 
     @Override
     public Order findById(Long id) {
-        return repository.findById(id).orElseThrow(()
+        return orderRepository.findById(id).orElseThrow(()
                 -> new RuntimeException("Can't find order by id " + id));
     }
 }
