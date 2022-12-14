@@ -45,7 +45,6 @@ public class TaskController {
         Task task = taskService.findById(id);
         task.setId(id);
         task.setStatus(status);
-        return taskMapper.toDto(taskService
-                .save(task));
+        return taskMapper.toDto(taskService.save(task));
     }
 }
