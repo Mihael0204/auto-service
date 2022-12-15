@@ -50,9 +50,8 @@ class MasterControllerTest {
         RestAssuredMockMvc.given()
                 .queryParam("id", 1)
                 .when()
-                .get("/{id}/salary")
+                .get("/id/salary", 1)
                 .then()
-                .statusCode(200)
-                .body(Matchers.equalTo(160));
+                .body(Matchers.equalTo("160.0"));
     }
 }

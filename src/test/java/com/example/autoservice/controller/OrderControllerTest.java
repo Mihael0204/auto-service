@@ -33,6 +33,7 @@ class OrderControllerTest {
 
     @BeforeEach
     void setUp() {
+        RestAssuredMockMvc.mockMvc(mockMvc);
         order = new Order();
         order.setId(1L);
         order.setStatus(Status.ACCEPTED);
@@ -52,7 +53,7 @@ class OrderControllerTest {
         RestAssuredMockMvc.given()
                 .queryParam("id", 1)
                 .when()
-                .get("/{id}/price")
+                .get("/{id}/price", 1)
                 .then()
                 .statusCode(200)
                 .body("price", Matchers.equalTo(500));
